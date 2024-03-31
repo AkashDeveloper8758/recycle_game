@@ -21,8 +21,8 @@ function HomeScreen() {
     if (!isNextQuestionActive) return;
     setIsNextQuestionActive(false);
     // validate answer
+    let newPoint = points;
     if (!isAllSubmitted) {
-      let newPoint = points;
       if (questionItem.typeId === typeId) {
         newPoint = points + 1;
       } else {
@@ -36,8 +36,10 @@ function HomeScreen() {
     }
     // go to next question
     if (questionIndex !== questionsList.length - 1) {
+      console.log("new vs old points : ", [newPoint, points]);
+      const isCorrectAns = newPoint > points;
       setTimeout(() => {
-        setQuestionIndex(questionIndex + 1);
+        if (isCorrectAns) setQuestionIndex(questionIndex + 1);
         setIsNextQuestionActive(true);
       }, globalConstants.questionDelayDuration);
     } else {
@@ -57,12 +59,14 @@ function HomeScreen() {
         </div>
       </div>
 
-      <div className="flex flex-col justify-between  h-full space-y-4 relative">
+      <div className="flex flex-col justify-between  h-full space-y-4 relative items-center">
         <TopItemComponent
+          questionItem={questionItem}
           isAllSubmitted={isAllSubmitted}
-          name={questionItem.name}
           points={points}
-          image={questionItem.image}
+          isShowDescription={
+            !isNextQuestionActive && pointStatus.pointGained > 0
+          }
         />
         <GarbagesComponent
           garbageList={garbageList}

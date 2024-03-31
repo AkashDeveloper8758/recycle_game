@@ -1,5 +1,5 @@
 const globalConstants = {
-    questionDelayDuration : 2000,
+    questionDelayDuration : 2500,
 }
 
 export {globalConstants}
